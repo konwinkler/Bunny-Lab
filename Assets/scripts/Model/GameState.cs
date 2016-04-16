@@ -41,7 +41,7 @@ public class GameState
 		if (currentActor.team == 0 && currentActor.currentTile == world.goal) {
 			Debug.Log("new world");
 			world.destroy ();
-			world = new World (true);
+			world.generateWorld (true, 5, 10);
 		}
 
 //

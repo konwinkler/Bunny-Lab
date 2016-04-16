@@ -20,29 +20,35 @@ public class TileController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        foreach (Tile tile in world.tiles)
-        {
-            GameObject tileGameObject = new GameObject();
+		world.registerGenerateWorld (createTiles);
+		createTiles ();
+    }
 
-            tileGameObject.name = "Tile_" + tile.x + "_" + tile.y;
-            tileGameObject.transform.position = new Vector3(tile.x, tile.y, 0);
-            tileGameObject.transform.SetParent(this.transform, true);
+	void createTiles ()
+	{
+		foreach (Tile tile in world.tiles)
+		{
+			GameObject tileGameObject = new GameObject();
 
-            SpriteRenderer sr = tileGameObject.AddComponent<SpriteRenderer>();
-            switch (tile.type)
-            {
-                case Tile.TileType.Floor:
-                    sr.sprite = FloorSprite;
-                    break;
-                default:
-                    throw new Exception("Tile type not recognized by tile controller.");
-            }
-            sr.sortingLayerName = "Tiles";
+			tileGameObject.name = "Tile_" + tile.x + "_" + tile.y;
+			tileGameObject.transform.position = new Vector3(tile.x, tile.y, 0);
+			tileGameObject.transform.SetParent(this.transform, true);
+
+			SpriteRenderer sr = tileGameObject.AddComponent<SpriteRenderer>();
+			switch (tile.type)
+			{
+			case Tile.TileType.Floor:
+				sr.sprite = FloorSprite;
+				break;
+			default:
+				throw new Exception("Tile type not recognized by tile controller.");
+			}
+			sr.sortingLayerName = "Tiles";
 
 			gameObjectCache.Add (tile, tileGameObject);
 			tile.registerDestroy (destroy);
-        }
-    }
+		}
+	}
 
 	void destroy (Tile tile)
 	{

@@ -60,5 +60,6 @@ public class MovementMode : GameMode
 	public void destroy ()
 	{
 		movementRange.clear ();
+		notifyEndTurn = null;
 	}
 }

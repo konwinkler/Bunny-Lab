@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class World
 {
-    public int Height { get; internal set; }
-    public int Width { get; internal set; }
+    public int height { get; internal set; }
+    public int width { get; internal set; }
     public Tile[,] tiles { get; internal set; }
     public List<Actor> actors { get; internal set; }
     public LinkedList<Wall> walls { get; internal set; }
     public GameState gameState { get; internal set; }
 	public Tile goal { get; internal set; }
 
+	Action notifyGenerateWorld;
+
     public World(Boolean random, int width = 5, int height = 10)
     {
-        this.Width = width;
-        this.Height = height;
+		generateWorld (random, width, height);
+    }
+
+	public void generateWorld(Boolean random, int width, int height)
+	{
+		this.width = width;
+		this.height = height;
 
 		createTiles ();
 		goal = getTileAt (width - 1, height - 1);
@@ -28,9 +35,23 @@ public class World
 
 		createActors ();
 		gameState = new GameState (this, actors [0]);
-    }
 
-    private void createActors()
+		if (notifyGenerateWorld != null) {
+			notifyGenerateWorld ();
+		}
+	}
+
+	public void registerGenerateWorld(Action callback)
+	{
+		notifyGenerateWorld += callback;
+	}
+
+	public void unregisterGenerateWorld(Action callback)
+	{
+		notifyGenerateWorld -= callback;
+	}
+
+	private void createActors()
     {
         actors = new List<Actor>();
         actors.Add(new Actor("Player1", getTileAt(0, 0), this, 2, 0));
@@ -45,7 +66,7 @@ public class World
         {
             neighbours.Add(getTileAt(root.x - 1, root.y));
         }
-        if (root.x < (Width - 1) && !blocked(root, Wall.Direction.Right))
+        if (root.x < (width - 1) && !blocked(root, Wall.Direction.Right))
         {
             neighbours.Add(getTileAt(root.x + 1, root.y));
         }
@@ -53,7 +74,7 @@ public class World
         {
             neighbours.Add(getTileAt(root.x, root.y - 1));
         }
-        if (root.y < (Height - 1) && !blocked(root, Wall.Direction.Up))
+        if (root.y < (height - 1) && !blocked(root, Wall.Direction.Up))
         {
             neighbours.Add(getTileAt(root.x, root.y + 1));
         }
@@ -79,8 +100,8 @@ public class World
 			Debug.Log ("create walls " + amountWalls);
 			walls = new LinkedList<Wall> ();
 			for (int i = 0; i < amountWalls; i++) {
-				int x = UnityEngine.Random.Range (0, Width);
-				int y = UnityEngine.Random.Range (0, Height);
+				int x = UnityEngine.Random.Range (0, width);
+				int y = UnityEngine.Random.Range (0, height);
 				int dir = UnityEngine.Random.Range (0, 4);
 				Wall.Direction direction = (Wall.Direction)dir;
 
@@ -145,11 +166,11 @@ public class World
 
     private void createTiles()
     {
-        tiles = new Tile[Width, Height];
+        tiles = new Tile[width, height];
 
-        for (int x = 0; x < Width; x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < height; y++)
             {
                 tiles[x, y] = new Tile(x, y);
             }
@@ -163,7 +184,7 @@ public class World
             return null;
         }
 
-        if (x >= Width || y >= Height)
+        if (x >= width || y >= height)
         {
             return null;
         }
@@ -186,7 +207,5 @@ public class World
 		foreach (Tile tile in tiles) {
 			tile.destroy ();
 		}
-
-
 	}
 }

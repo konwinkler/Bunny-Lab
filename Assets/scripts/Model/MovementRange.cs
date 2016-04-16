@@ -40,6 +40,8 @@ public class MovementRange
     {
         validMovementTiles.Clear();
         notifyClearMovement(this);
+		notifyNewMovement = null;
+		notifyClearMovement = null;
     }
 
 }

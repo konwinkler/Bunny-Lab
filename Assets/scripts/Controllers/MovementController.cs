@@ -16,11 +16,17 @@ public class MovementController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // FIXME: this needs to be called from the game mode
-        world.gameState.movementMode.movementRange.newMovementCallback(drawMovementRange);
-        world.gameState.movementMode.movementRange.clearMovementCallback(destroyAll);
-        drawMovementRange(world.gameState.movementMode.movementRange);
+		world.registerGenerateWorld (createRanges);
+		createRanges ();
     }
+
+	void createRanges ()
+	{
+		// FIXME: this needs to be called from the game mode
+		world.gameState.movementMode.movementRange.newMovementCallback(drawMovementRange);
+		world.gameState.movementMode.movementRange.clearMovementCallback(destroyAll);
+		drawMovementRange(world.gameState.movementMode.movementRange);
+	}
 
     public void drawMovementRange(MovementRange movementRange)
     {
