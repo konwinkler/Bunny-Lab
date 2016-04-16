@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 0c517751e4b16db4fa55a491e439f07c
+timeCreated: 1458609933
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - FloorSprite: {fileID: 21300000, guid: 4543cae2a7391e147837f5c5536d2b08, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
